@@ -20,4 +20,4 @@ contains 4 fragments:<br />
 Email: smdevsmail@gmail.com
 
 # Contributing guidelines
-https://github.com/Muhesh7/ScheduleMessenger/blob/main/CONTRIBUTING.md </b>
+https://github.com/Muhesh7/ScheduleMessenger/blob/master/CONTRIBUTING.md </b>
