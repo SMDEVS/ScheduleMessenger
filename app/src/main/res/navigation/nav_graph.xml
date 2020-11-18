@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashBoardFragment">
+
+    <fragment
+        android:id="@+id/dashBoardFragment"
+        android:name="com.example.schedulemessenger.DashBoardFragment"
+        android:label="fragment_dash_board"
+        tools:layout="@layout/fragment_dash_board">
+        <action
+            android:id="@+id/action_dashBoardFragment_to_emailScheduleFragment"
+            app:destination="@id/emailScheduleFragment" />
+        <action
+            android:id="@+id/action_dashBoardFragment_to_whatsappScheduleFragment"
+            app:destination="@id/whatsappScheduleFragment" />
+        <action
+            android:id="@+id/action_dashBoardFragment_to_smsScheduleFragment"
+            app:destination="@id/smsScheduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/smsScheduleFragment"
+        android:name="com.example.schedulemessenger.SmsScheduleFragment"
+        android:label="fragment_sms_schedule"
+        tools:layout="@layout/fragment_sms_schedule" />
+    <fragment
+        android:id="@+id/whatsappScheduleFragment"
+        android:name="com.example.schedulemessenger.WhatsappScheduleFragment"
+        android:label="fragment_whatsapp_schedule"
+        tools:layout="@layout/fragment_whatsapp_schedule" />
+    <fragment
+        android:id="@+id/emailScheduleFragment"
+        android:name="com.example.schedulemessenger.EmailScheduleFragment"
+        android:label="fragment_email_schedule"
+        tools:layout="@layout/fragment_email_schedule" />
+</navigation>
