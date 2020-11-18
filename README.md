@@ -8,7 +8,7 @@ implements scheduling messages/stories in:<br />
 * Email
 
 MVVM architecture,Work-Manager,Nav graphs,Room DB and viewBinding are used<br/>
-contains 4 fragments:<br />
+contains 5 fragments:<br />
 * DashBoard_Fragment...(for Selecting between Whatsapp,Instagram,SMS and Email) 
 * WhatsApp_Schedule_Fragment...(for Scheduling Whatsapp messages) <br />
 * Email_Schedule_Fragment...(for Scheduling Email messages) <br />
