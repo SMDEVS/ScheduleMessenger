@@ -8,6 +8,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +39,7 @@ import java.util.Calendar;
 
 public class SmsScheduleFragment extends Fragment {
 
+    private static final String TAG = "In SmsScheduleFragment";
     private FragmentSmsScheduleBinding smsScheduleBinding;
 
     public SmsScheduleFragment() {
@@ -81,22 +86,29 @@ public class SmsScheduleFragment extends Fragment {
                 ActivityCompat.requestPermissions(getActivity(), new String[]
                         {Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
 
-                Intent intent = new Intent(getContext(), NotificationBroadcast.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),
-                        0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                AlarmManager smsAlarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-                long timeAtButtonClick = System.currentTimeMillis();
-                long tenSecondsInMilliS = 10*1000;
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    smsAlarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + tenSecondsInMilliS,
-                            pendingIntent);
-                }
+                scheduleSmsJobService();
 
             }
         });
 
+    }
+
+    private void scheduleSmsJobService() {
+        ComponentName componentName = new ComponentName(getContext(), SmsJobService.class);
+        JobInfo jobInfo = new JobInfo.Builder(123, componentName)
+                .setRequiresDeviceIdle(false)
+                .setRequiresCharging(false)
+                .setPersisted(true)
+                .setMinimumLatency(1000)
+                .build();
+        JobScheduler jobScheduler = (JobScheduler) getActivity().getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        int resultCode = jobScheduler.schedule(jobInfo);
+
+        if(resultCode == JobScheduler.RESULT_SUCCESS) {
+            Log.v(TAG, "Job was successfully scheduled.");
+        } else {
+            Log.v(TAG, "Job was unsuccessfully scheduled.");
+        }
     }
 
     //To allow us to take input in necessary format for time
