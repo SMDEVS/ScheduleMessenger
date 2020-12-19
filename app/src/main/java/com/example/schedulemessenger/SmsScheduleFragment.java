@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.telephony.SmsManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,12 +36,16 @@ import android.widget.Toast;
 
 import com.example.schedulemessenger.databinding.FragmentSmsScheduleBinding;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SmsScheduleFragment extends Fragment {
 
     private static final String TAG = "In SmsScheduleFragment";
     private FragmentSmsScheduleBinding smsScheduleBinding;
+    private String scheduledDateTime;
 
     public SmsScheduleFragment() {
         // Required empty public constructor
@@ -94,27 +99,64 @@ public class SmsScheduleFragment extends Fragment {
     }
 
     private void scheduleSmsJobService() {
+
+        long minimumLatency = calculateTimeInterval();
+
         ComponentName componentName = new ComponentName(getContext(), SmsJobService.class);
         JobInfo jobInfo = new JobInfo.Builder(123, componentName)
                 .setRequiresDeviceIdle(false)
                 .setRequiresCharging(false)
                 .setPersisted(true)
-                .setMinimumLatency(1000)
+                .setMinimumLatency(minimumLatency)
+                .setOverrideDeadline(minimumLatency + 5000)
                 .build();
         JobScheduler jobScheduler = (JobScheduler) getActivity().getSystemService(Context.JOB_SCHEDULER_SERVICE);
         int resultCode = jobScheduler.schedule(jobInfo);
 
         if(resultCode == JobScheduler.RESULT_SUCCESS) {
             Log.v(TAG, "Job was successfully scheduled.");
+            Toast.makeText(getContext(), "Task executed.", Toast.LENGTH_SHORT).show();
         } else {
             Log.v(TAG, "Job was unsuccessfully scheduled.");
         }
     }
 
+    private long calculateTimeInterval() {
+
+        String dateFormat = "MM/dd/yyyy HH:mm";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+        Date currentDateObject = null;
+        Date scheduledDateObject = null;
+
+        // To obtain number of millis passed, since epoch, for current date and time
+        Calendar currDateTime = Calendar.getInstance();
+        String currentDateTime = DateFormat.format(dateFormat, currDateTime).toString();
+        try {
+            currentDateObject = simpleDateFormat.parse(currentDateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Toast.makeText(getContext(), scheduledDateTime, Toast.LENGTH_SHORT).show();
+
+        // To obtain number of millis passed, since epoch, for scheduled date and time
+        try {
+            scheduledDateObject = simpleDateFormat.parse(scheduledDateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // To obtain difference between scheduled time and current time, in milliseconds
+        long timeInterval = scheduledDateObject.getTime() - currentDateObject.getTime();
+
+        return timeInterval;
+    }
+
     //To allow us to take input in necessary format for time
     private void timeInputHandler() {
-        Calendar currentTime = Calendar.getInstance();
 
+        //To get current time in hours and minutes
+        Calendar currentTime = Calendar.getInstance();
         int currentHour = currentTime.get(Calendar.HOUR);
         int currentMinutes = currentTime.get(Calendar.MINUTE);
 
@@ -122,6 +164,14 @@ public class SmsScheduleFragment extends Fragment {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 Toast.makeText(getContext(), "Time has been set!", Toast.LENGTH_LONG).show();
+
+                Calendar selectedTime = Calendar.getInstance();
+                selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                selectedTime.set(Calendar.MINUTE, minute);
+
+                scheduledDateTime = scheduledDateTime + " " + DateFormat.format("HH:mm",
+                        selectedTime).toString();
+
             }
         }, currentHour, currentMinutes, true);
 
@@ -131,8 +181,9 @@ public class SmsScheduleFragment extends Fragment {
     //To allow us to take input in necessary format for a date
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void dateInputHandler() {
-        Calendar currentDate = Calendar.getInstance();
 
+        //To get current date
+        Calendar currentDate = Calendar.getInstance();
         int currentYear = currentDate.get(Calendar.YEAR);
         int currentMonth = currentDate.get(Calendar.MONTH);
         int currentDay = currentDate.get(Calendar.DATE);
@@ -142,6 +193,14 @@ public class SmsScheduleFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 Toast.makeText(getContext(), "Date has been set!", Toast.LENGTH_LONG).show();
+
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(Calendar.YEAR, year);
+                selectedDate.set(Calendar.MONTH, month);
+                selectedDate.set(Calendar.DATE, dayOfMonth);
+
+                scheduledDateTime = DateFormat.format("MM/dd/yyyy", selectedDate).toString();
+
             }
         }, currentYear, currentMonth, currentDay);
 
