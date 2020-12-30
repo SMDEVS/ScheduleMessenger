@@ -100,25 +100,14 @@ public class SmsScheduleFragment extends Fragment {
 
     private void scheduleSmsJobService() {
 
-        long minimumLatency = calculateTimeInterval();
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(
+                getActivity().ALARM_SERVICE);
+        Intent intent = new Intent(getActivity(), MyBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
+                intent, 0);
+        long timeInterval = System.currentTimeMillis() + calculateTimeInterval();
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInterval, pendingIntent);
 
-        ComponentName componentName = new ComponentName(getContext(), SmsJobService.class);
-        JobInfo jobInfo = new JobInfo.Builder(123, componentName)
-                .setRequiresDeviceIdle(false)
-                .setRequiresCharging(false)
-                .setPersisted(true)
-                .setMinimumLatency(minimumLatency)
-                .setOverrideDeadline(minimumLatency + 5000)
-                .build();
-        JobScheduler jobScheduler = (JobScheduler) getActivity().getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        int resultCode = jobScheduler.schedule(jobInfo);
-
-        if(resultCode == JobScheduler.RESULT_SUCCESS) {
-            Log.v(TAG, "Job was successfully scheduled.");
-            Toast.makeText(getContext(), "Task executed.", Toast.LENGTH_SHORT).show();
-        } else {
-            Log.v(TAG, "Job was unsuccessfully scheduled.");
-        }
     }
 
     private long calculateTimeInterval() {
