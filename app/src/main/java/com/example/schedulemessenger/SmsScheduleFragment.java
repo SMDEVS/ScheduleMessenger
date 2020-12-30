@@ -2,10 +2,7 @@ package com.example.schedulemessenger;
 
 import android.Manifest;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.app.job.JobInfo;
@@ -16,7 +13,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -33,6 +29,12 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.schedulemessenger.databinding.FragmentSmsScheduleBinding;
 
@@ -71,7 +73,7 @@ public class SmsScheduleFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                dateInputHandler(); 
+                dateInputHandler();
             }
         });
 
@@ -99,7 +101,6 @@ public class SmsScheduleFragment extends Fragment {
     }
 
     private void scheduleSmsJobService() {
-
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(
                 getActivity().ALARM_SERVICE);
         Intent intent = new Intent(getActivity(), MyBroadcastReceiver.class);
@@ -124,6 +125,7 @@ public class SmsScheduleFragment extends Fragment {
             currentDateObject = simpleDateFormat.parse(currentDateTime);
         } catch (ParseException e) {
             e.printStackTrace();
+
         }
 
         Toast.makeText(getContext(), scheduledDateTime, Toast.LENGTH_SHORT).show();
@@ -168,7 +170,6 @@ public class SmsScheduleFragment extends Fragment {
     }
 
     //To allow us to take input in necessary format for a date
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void dateInputHandler() {
 
         //To get current date
