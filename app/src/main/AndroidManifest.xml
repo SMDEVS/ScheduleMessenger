@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:launchMode="singleTop">
 
             <intent-filter>
@@ -25,9 +26,27 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".MyBroadcastReceiver"
+        <receiver
+            android:name=".MyBroadcastReceiver"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".WhatsAppService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="SchedulerService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/whatsappservices" />
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+                <action
+                    android:name=".WhatsAppService"
+                    android:value=".WhatsAppService" />
+            </intent-filter>
+        </service>
 
     </application>
 

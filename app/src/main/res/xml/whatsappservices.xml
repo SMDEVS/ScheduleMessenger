@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accessibility-service android:accessibilityEventTypes="typeViewClicked|typeViewFocused"
+    android:packageNames="com.whatsapp"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:notificationTimeout="100"
+    android:accessibilityFlags="flagRequestAccessibilityButton"
+    android:canRetrieveWindowContent="true"
+    android:canRequestTouchExplorationMode="true"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
