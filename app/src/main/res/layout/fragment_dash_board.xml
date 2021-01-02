@@ -9,7 +9,7 @@
     android:columnOrderPreserved="true"
     android:padding="10dp"
     android:rowCount="2"
-    tools:context=".DashBoardFragment">
+    tools:context=".View.DashBoardFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/copDir"

@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.schedulemessenger.Model.Message;
-import com.example.schedulemessenger.Repository.MessageRepository;
+import com.example.schedulemessenger.ViewModel.Repository.MessageRepository;
 
 import java.util.List;
 

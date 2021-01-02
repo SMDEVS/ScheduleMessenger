@@ -1,4 +1,4 @@
-package com.example.schedulemessenger;
+package com.example.schedulemessenger.View;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schedulemessenger.Model.Message;
+import com.example.schedulemessenger.R;
 
 import java.util.ArrayList;
 import java.util.List;

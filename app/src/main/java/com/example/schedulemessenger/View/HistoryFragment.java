@@ -1,4 +1,4 @@
-package com.example.schedulemessenger;
+package com.example.schedulemessenger.View;
 
 import android.os.Bundle;
 

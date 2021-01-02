@@ -1,4 +1,4 @@
-package com.example.schedulemessenger;
+package com.example.schedulemessenger.View;
 
 import android.Manifest;
 import android.app.AlarmManager;
@@ -42,6 +42,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.schedulemessenger.Model.Message;
+import com.example.schedulemessenger.MyBroadcastReceiver;
+import com.example.schedulemessenger.R;
 import com.example.schedulemessenger.ViewModel.MessageViewModel;
 import com.example.schedulemessenger.databinding.FragmentSmsScheduleBinding;
 

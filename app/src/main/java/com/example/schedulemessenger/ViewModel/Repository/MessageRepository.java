@@ -1,4 +1,4 @@
-package com.example.schedulemessenger.Repository;
+package com.example.schedulemessenger.ViewModel.Repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
