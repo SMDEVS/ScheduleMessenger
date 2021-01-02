@@ -36,22 +36,33 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.example.schedulemessenger.Model.Message;
+import com.example.schedulemessenger.ViewModel.MessageViewModel;
 import com.example.schedulemessenger.databinding.FragmentSmsScheduleBinding;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
 import static android.content.Context.ALARM_SERVICE;
 
 public class SmsScheduleFragment extends Fragment {
 
+    private ArrayList<Message> mMessages =new ArrayList<>();
+
     private static final String TAG = "In SmsScheduleFragment";
     private FragmentSmsScheduleBinding smsScheduleBinding;
     private String scheduledDateTime;
+
+    private MessageViewModel messageViewModel;
 
     public SmsScheduleFragment() {
         // Required empty public constructor
@@ -100,8 +111,27 @@ public class SmsScheduleFragment extends Fragment {
                 ActivityCompat.requestPermissions(getActivity(), new String[]
                         {Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
 
+                Message message1 = new Message();
+                message1.setPhoneNumber("1111111111");
+                message1.setMessageType(1);
+                message1.setMessageStatus("Pending");
+                message1.setMessageText("Hello, this is Neha Binwal.");
+                message1.setImageUri("");
+                message1.setInstaUsername("");
+                message1.setTimeInterval(600000);
+                message1.setTimeString("1 JAN, 2021, 19:17");
+
+                messageViewModel.insertMessage(message1);
+
                 scheduleSmsJobService();
 
+            }
+        });
+
+        smsScheduleBinding.goToHistoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_smsScheduleFragment_to_historyFragment);
             }
         });
 
@@ -167,7 +197,7 @@ public class SmsScheduleFragment extends Fragment {
                 Toast.makeText(getContext(), "Time has been set!", Toast.LENGTH_LONG).show();
 
                 Calendar calendar1=Calendar.getInstance();
-                calendar1.set(Calendar.HOUR,hourOfDay);
+                calendar1.set(Calendar.HOUR_OF_DAY,hourOfDay);
                 calendar1.set(Calendar.MINUTE,minute);
                 calendar1.set(Calendar.SECOND,00);
                 CharSequence charSequence= DateFormat.format("hh:mm:ss a",calendar1);
@@ -215,4 +245,15 @@ public class SmsScheduleFragment extends Fragment {
         smsScheduleBinding = null;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        messageViewModel= new ViewModelProvider(getActivity()).get(MessageViewModel.class);
+        messageViewModel.getAllMessages().observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
+            @Override
+            public void onChanged(List<Message> messages) {
+                mMessages = (ArrayList<Message>) messages;
+            }
+        });
+    }
 }

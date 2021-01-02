@@ -22,7 +22,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "Hello, from my Broadcast Receiver!", Toast.LENGTH_SHORT).show();
-        SendWA(context);
+        //SendWA(context);
+        SendSMS();
         createNotificationChannel(context);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,
                 "notifyAboutSms")
@@ -56,7 +57,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     private void SendSMS()
     {
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("9865155665", null, "Hello!",
+        smsManager.sendTextMessage("7045360949", null, "Hello!",
                 null, null);
     }
 

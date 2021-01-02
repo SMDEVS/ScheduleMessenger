@@ -84,5 +84,16 @@
             android:text="SEND MESSAGE"
             android:textColor="@color/colorAccent" />
 
+        <Button
+            android:id="@+id/goToHistoryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="16dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/cardview_dark_background"
+            android:text="GO TO HISTORY"
+            android:textColor="@color/colorAccent" />
+
     </LinearLayout>
 </FrameLayout>

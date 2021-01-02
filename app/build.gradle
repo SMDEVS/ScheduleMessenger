@@ -42,6 +42,6 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.2.5"
     // WorkManager
     implementation "androidx.work:work-runtime:2.4.0"
-
-
+    /* For CardView */
+    implementation "androidx.cardview:cardview:1.0.0"
 }
