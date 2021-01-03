@@ -15,6 +15,9 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.schedulemessenger.Model.Message;
+import com.example.schedulemessenger.Repository.MessageRepository;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -23,18 +26,25 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "Hello, from my Broadcast Receiver!", Toast.LENGTH_SHORT).show();
         //SendWA(context);
-        SendSMS();
+
+        int id = intent.getIntExtra("ID", -1);
+        String phoneNumber = intent.getStringExtra("PHONE");
+        String messageText = intent.getStringExtra("TEXT");
+
+        sendSMS(phoneNumber, messageText);
+
         createNotificationChannel(context);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,
                 "notifyAboutSms")
                 .setSmallIcon(R.drawable.ic_sms)
-                .setContentTitle("Message sent!")
+                .setContentTitle("Message sent to " + phoneNumber + "!")
                 .setContentText("Message has been sent to the intended recipient.")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-        notificationManagerCompat.notify(200, notificationBuilder.build());
+        notificationManagerCompat.notify(id, notificationBuilder.build());
+
     }
 
     private void SendWA(Context context)
@@ -54,10 +64,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    private void SendSMS()
+    private void sendSMS(String phoneNumber, String messageText)
     {
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("7045360949", null, "Hello!",
+        smsManager.sendTextMessage(phoneNumber, null, messageText,
                 null, null);
     }
 
