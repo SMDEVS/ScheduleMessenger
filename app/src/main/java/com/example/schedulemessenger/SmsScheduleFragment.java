@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -60,7 +61,9 @@ public class SmsScheduleFragment extends Fragment {
 
     private static final String TAG = "In SmsScheduleFragment";
     private FragmentSmsScheduleBinding smsScheduleBinding;
-    private String scheduledDateTime;
+    private long scheduledTimeInterval;
+    private long finalSendingTime;
+    private Message message1;
 
     private MessageViewModel messageViewModel;
 
@@ -105,25 +108,31 @@ public class SmsScheduleFragment extends Fragment {
         smsScheduleBinding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Send button is responsive!",
+                Toast.makeText(getContext(), "Message set",
                         Toast.LENGTH_SHORT).show();
 
                 ActivityCompat.requestPermissions(getActivity(), new String[]
                         {Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
 
-                Message message1 = new Message();
-                message1.setPhoneNumber("1111111111");
-                message1.setMessageType(1);
-                message1.setMessageStatus("Pending");
-                message1.setMessageText("Hello, this is Neha Binwal.");
-                message1.setImageUri("");
-                message1.setInstaUsername("");
-                message1.setTimeInterval(600000);
-                message1.setTimeString("1 JAN, 2021, 19:17");
+                String phoneNumber = smsScheduleBinding.phoneNumberEditText.getText().toString();
+                String messageText = smsScheduleBinding.messageEditText.getText().toString();
 
-                messageViewModel.insertMessage(message1);
+                scheduledTimeInterval = calculateTimeInterval();
+                finalSendingTime = scheduledTimeInterval + System.currentTimeMillis();
+
+                message1 = new Message();
+                message1.setPhoneNumber(phoneNumber); //PHONE
+                message1.setMessageType(1); //TYPE
+                message1.setMessageStatus("Pending"); //STATUS
+                message1.setMessageText(messageText); //TEXT
+                message1.setImageUri(""); //IMAGE
+                message1.setInstaUsername(""); //INSTA_USERNAME
+                message1.setTimeInterval(scheduledTimeInterval); //TIME_INTERVAL
+                message1.setTimeString(scheduledDate + " " + ScheduledTime); //TIME_STRING
 
                 scheduleSmsJobService();
+
+                messageViewModel.insertMessage(message1);
 
             }
         });
@@ -139,11 +148,23 @@ public class SmsScheduleFragment extends Fragment {
 
     private void scheduleSmsJobService() {
         Intent intent = new Intent(getActivity(), MyBroadcastReceiver.class);
+        intent.putExtra("ID", message1.getMessageId());
+        intent.putExtra("PHONE", message1.getPhoneNumber());
+        intent.putExtra("TEXT", message1.getMessageText());
+
+        /**
+        intent.putExtra("TYPE", message1.getMessageType());
+        intent.putExtra("STATUS", message1.getMessageStatus());
+        intent.putExtra("IMAGE", message1.getImageUri());
+        intent.putExtra("INSTA_USERNAME", message1.getInstaUsername());
+        intent.putExtra("TIME_INTERVAL", message1.getTimeInterval());
+        intent.putExtra("TIME_STRING", message1.getTimeString());
+         */
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 1,
                 intent, 0);
-        long timeInterval = calculateTimeInterval()+System.currentTimeMillis();
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInterval, pendingIntent);
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, finalSendingTime, pendingIntent);
 
     }
 
@@ -175,9 +196,6 @@ public class SmsScheduleFragment extends Fragment {
 
         }
 
-        Toast.makeText(getContext(), scheduledDateTime, Toast.LENGTH_SHORT).show();
-
-
         // To obtain difference between scheduled time and current time, in milliseconds
         Log.d("HHHH",String.valueOf(scheduledDateObject.getTime() - currentDateObject.getTime()));
         return scheduledDateObject.getTime() - currentDateObject.getTime();
@@ -194,7 +212,7 @@ public class SmsScheduleFragment extends Fragment {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                Toast.makeText(getContext(), "Time has been set!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Time set", Toast.LENGTH_LONG).show();
 
                 Calendar calendar1=Calendar.getInstance();
                 calendar1.set(Calendar.HOUR_OF_DAY,hourOfDay);
@@ -210,7 +228,7 @@ public class SmsScheduleFragment extends Fragment {
     }
 
     //To allow us to take input in necessary format for a date
-    String scheduledDate,ScheduledTime;
+    String scheduledDate , ScheduledTime;
     private void dateInputHandler() {
 
         //To get current date
@@ -223,7 +241,7 @@ public class SmsScheduleFragment extends Fragment {
                 new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Toast.makeText(getContext(), "Date has been set!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Date set", Toast.LENGTH_LONG).show();
 
                 Calendar calendar1=Calendar.getInstance();
                 calendar1.set(Calendar.YEAR,year);
