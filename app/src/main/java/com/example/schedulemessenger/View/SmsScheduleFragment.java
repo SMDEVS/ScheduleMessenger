@@ -88,9 +88,9 @@ public class SmsScheduleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+      //  Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+      //  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+       // startActivity(intent);
 
         smsScheduleBinding.dateButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -139,12 +139,6 @@ public class SmsScheduleFragment extends Fragment {
             }
         });
 
-        smsScheduleBinding.goToHistoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_smsScheduleFragment_to_historyFragment);
-            }
-        });
 
     }
 

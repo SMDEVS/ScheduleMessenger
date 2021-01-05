@@ -1,7 +1,5 @@
 package com.example.schedulemessenger.Model;
 
-import android.view.MenuInflater;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

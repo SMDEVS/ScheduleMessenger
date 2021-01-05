@@ -1,4 +1,4 @@
-package com.example.schedulemessenger.View;
+package com.example.schedulemessenger.View.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

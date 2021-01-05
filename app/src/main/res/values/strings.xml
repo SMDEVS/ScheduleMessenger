@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">ScheduleMessenger</string>
+    <string name="SMS">SMS</string>
+    <string name="Email">Email</string>
+    <string name="WhatsApp">WhatsAPP</string>
+    <string name="Instagram">Instagram</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

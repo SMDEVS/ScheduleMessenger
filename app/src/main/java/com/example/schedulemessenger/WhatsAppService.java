@@ -15,8 +15,6 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import java.util.List;
 
 public class WhatsAppService extends AccessibilityService {
-    public WhatsAppService() {
-    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {

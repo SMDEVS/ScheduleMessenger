@@ -1,14 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_margin="10dp"
+android:orientation="vertical"
+
+tools:context=".View.SmsScheduleFragment">
+
+
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".View.EmailScheduleFragment">
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="To: "
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/colorPrimary" />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/phoneNumberEditText"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Mail ID "
+            android:inputType="phone" />
+
+        <ImageButton
+            android:id="@+id/contacts"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+
+            android:layout_weight="0"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_email"
+            android:padding="5dp"
+            android:textColor="@color/colorPrimaryDark" />
+    </LinearLayout>
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/dateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/button_background"
+        android:drawableEnd="@drawable/ic_calender"
+        android:drawablePadding="5dp"
+        android:padding="8dp"
+        android:text="SET DATE"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <Button
+        android:id="@+id/timeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/button_background"
+        android:drawableEnd="@drawable/ic_baseline_access_time_24"
+        android:drawablePadding="5dp"
+        android:padding="8dp"
+        android:text="SET TIME"
+        android:textColor="@color/colorPrimaryDark" />
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Draft your Mail: "
+        android:layout_marginBottom="7dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/colorPrimary" />
+    <EditText
+        android:id="@+id/subjectEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="0.9"
+        android:hint=" Enter your subject"
+        android:inputType="text"
+        android:layout_marginBottom="-2dp"
+        android:maxLines="1" />
+    <EditText
+        android:id="@+id/messageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="0.9"
+        android:gravity="start"
+        android:hint=" Enter your Message"
+        android:inputType="text"
+        android:maxLines="10" />
+</LinearLayout>
+<Button
+    android:id="@+id/sendButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="30dp"
+    android:layout_gravity="bottom"
+    android:background="@drawable/button_background"
+    android:drawableEnd="@android:drawable/ic_menu_send"
+    android:padding="5dp"
+    android:text="Schedule"
+    android:textColor="@color/colorPrimaryDark" />
+</LinearLayout>

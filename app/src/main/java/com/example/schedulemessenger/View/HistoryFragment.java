@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.schedulemessenger.Model.Message;
+import com.example.schedulemessenger.View.Adapter.MessageAdapter;
 import com.example.schedulemessenger.ViewModel.MessageViewModel;
 import com.example.schedulemessenger.databinding.FragmentHistoryBinding;
 
@@ -50,7 +51,6 @@ public class HistoryFragment extends Fragment {
         messageViewModel.getAllMessages().observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
             @Override
             public void onChanged(List<Message> messages) {
-                Toast.makeText(getActivity(), "Hello from onChanged method!", Toast.LENGTH_SHORT).show();
                 MessageAdapter adapter = new MessageAdapter((ArrayList<Message>) messages);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 mRecyclerView.setAdapter(adapter);

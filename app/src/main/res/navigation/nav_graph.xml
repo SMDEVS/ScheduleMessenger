@@ -22,37 +22,45 @@
         <action
             android:id="@+id/action_dashBoardFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_dashBoardFragment_to_instagramScheduleFragment"
+            app:destination="@id/instagramScheduleFragment" />
+        <action
+            android:id="@+id/action_dashBoardFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/smsScheduleFragment"
         android:name="com.example.schedulemessenger.View.SmsScheduleFragment"
         android:label="fragment_sms_schedule"
-        tools:layout="@layout/fragment_sms_schedule" >
-        <action
-            android:id="@+id/action_smsScheduleFragment_to_historyFragment"
-            app:destination="@id/historyFragment" />
+        tools:layout="@layout/fragment_sms_schedule">
     </fragment>
     <fragment
         android:id="@+id/whatsappScheduleFragment"
         android:name="com.example.schedulemessenger.View.WhatsappScheduleFragment"
         android:label="fragment_whatsapp_schedule"
-        tools:layout="@layout/fragment_whatsapp_schedule" >
-        <action
-            android:id="@+id/action_whatsappScheduleFragment_to_historyFragment"
-            app:destination="@id/historyFragment" />
+        tools:layout="@layout/fragment_whatsapp_schedule">
     </fragment>
     <fragment
         android:id="@+id/emailScheduleFragment"
         android:name="com.example.schedulemessenger.View.EmailScheduleFragment"
         android:label="fragment_email_schedule"
-        tools:layout="@layout/fragment_email_schedule" >
-        <action
-            android:id="@+id/action_emailScheduleFragment_to_historyFragment"
-            app:destination="@id/historyFragment" />
+        tools:layout="@layout/fragment_email_schedule">
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.schedulemessenger.View.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/instagramScheduleFragment"
+        android:name="com.example.schedulemessenger.View.InstagramScheduleFragment"
+        android:label="fragment_instagram_schedule"
+        tools:layout="@layout/fragment_instagram_schedule"/>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.schedulemessenger.View.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

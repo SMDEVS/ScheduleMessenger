@@ -7,6 +7,7 @@
     tools:context=".View.HistoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="10dp"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
