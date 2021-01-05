@@ -33,8 +33,7 @@ public class DashBoardAdapter extends RecyclerView.Adapter<DashBoardAdapter.view
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, final int position) {
-        holder.binding.image.setImageResource(menuModelList.get(position).getIcon());
-        // holder.binding.image.setBackgroundColor(mContext.getResources().getColor(menuModelList.get(position).getIconColor()));
+        holder.binding.image.setImageResource(menuModelList.get(position).getIcon());;
         holder.binding.text.setText(menuModelList.get(position).getName());
         holder.binding.text.setTextColor(mContext.getResources().getColor(menuModelList.get(position).getTextColor()));
         holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {

@@ -25,7 +25,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         String messageText = intent.getStringExtra("TEXT");
         sendSMS(phoneNumber, messageText);
         //SendMail(context,intent);
-        SendIG(context);
+        //SendIG(context);
         createNotificationChannel(context);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,
                 "notifyAboutSms")
