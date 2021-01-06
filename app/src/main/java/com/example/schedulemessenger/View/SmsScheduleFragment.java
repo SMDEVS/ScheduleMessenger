@@ -88,10 +88,6 @@ public class SmsScheduleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-      //  Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-      //  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-       // startActivity(intent);
-
         smsScheduleBinding.dateButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -131,10 +127,9 @@ public class SmsScheduleFragment extends Fragment {
                 message1.setInstaUsername(""); //INSTA_USERNAME
                 message1.setTimeInterval(scheduledTimeInterval); //TIME_INTERVAL
                 message1.setTimeString(scheduledDate + " " + ScheduledTime); //TIME_STRING
+                messageViewModel.insertMessage(message1);
 
                 scheduleSmsJobService();
-
-                messageViewModel.insertMessage(message1);
 
             }
         });
@@ -147,9 +142,9 @@ public class SmsScheduleFragment extends Fragment {
         intent.putExtra("ID", message1.getMessageId());
         intent.putExtra("PHONE", message1.getPhoneNumber());
         intent.putExtra("TEXT", message1.getMessageText());
+        intent.putExtra("TYPE", message1.getMessageType());
 
         /**
-        intent.putExtra("TYPE", message1.getMessageType());
         intent.putExtra("STATUS", message1.getMessageStatus());
         intent.putExtra("IMAGE", message1.getImageUri());
         intent.putExtra("INSTA_USERNAME", message1.getInstaUsername());
@@ -157,7 +152,8 @@ public class SmsScheduleFragment extends Fragment {
         intent.putExtra("TIME_STRING", message1.getTimeString());
          */
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 1,
+        String currentString = message1.getPhoneNumber() + message1.getMessageText() + message1.getTimeString();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), currentString.hashCode(),
                 intent, 0);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, finalSendingTime, pendingIntent);

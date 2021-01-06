@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND" />
     <uses-permission android:name="android.permission.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -47,6 +48,9 @@
                     android:value=".WhatsAppService" />
             </intent-filter>
         </service>
+
+        <service android:name=".WhatsappForegroundService"
+            android:stopWithTask="false"/>
 
     </application>
 
