@@ -26,7 +26,10 @@ public class WhatsappForegroundService extends Service {
     public int onStartCommand(Intent whatsappServiceIntent, int flags, int startId) {
 
         Log.e("WhatsappForeground", "In onStartCommand");
-        Toast.makeText(this, "Hello from inside the ForegroundService!", Toast.LENGTH_SHORT).show();
+
+        String phoneNumber = whatsappServiceIntent.getStringExtra("PHONE");
+        String messageText = whatsappServiceIntent.getStringExtra("TEXT");
+        String timeString = whatsappServiceIntent.getStringExtra("TIME_STRING");
 
         Notification notification = new NotificationCompat.Builder(this, "Whatsapp Channel")
                 .setContentTitle("Sending WhatsApp Intent")
@@ -34,23 +37,28 @@ public class WhatsappForegroundService extends Service {
                 .setSmallIcon(R.drawable.ic_whatsapp)
                 .build();
 
-        startForeground(1, notification);
+        int hashCode = (phoneNumber + messageText + timeString).hashCode();
+        if (hashCode == 0)
+            hashCode--;
+
+        startForeground(hashCode, notification);
 
         try {
             Log.e("WhatsappForeground", "In try");
             Toast.makeText(this, "Hello from inside the ForegroundService!", Toast.LENGTH_SHORT).show();
-            String url ="https://api.whatsapp.com/send?phone=911111111111&text=" + URLEncoder.encode("message", "UTF-8");
+            String url = "https://api.whatsapp.com/send?phone=91" + phoneNumber +
+                    "&text=" + URLEncoder.encode(messageText, "UTF-8");
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setPackage("com.whatsapp");
             intent.setData(Uri.parse(url));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if(intent.resolveActivity(this.getPackageManager())!=null){
+            if (intent.resolveActivity(this.getPackageManager()) != null) {
                 this.startActivity(intent);
                 Thread.sleep(5000);
             }
         } catch (UnsupportedEncodingException | InterruptedException e) {
             e.printStackTrace();
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e("ERROR", e.getMessage());
         }
 

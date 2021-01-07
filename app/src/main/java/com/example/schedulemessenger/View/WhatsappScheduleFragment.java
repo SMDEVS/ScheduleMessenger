@@ -47,7 +47,7 @@ import com.example.schedulemessenger.R;
 
 public class WhatsappScheduleFragment extends Fragment {
 
-    private ArrayList<Message> mMessages =new ArrayList<>();
+    private ArrayList<Message> mMessages = new ArrayList<>();
 
     //To allow us to take input in necessary format for a date
     String scheduledDate, ScheduledTime;
@@ -131,13 +131,13 @@ public class WhatsappScheduleFragment extends Fragment {
         intent.putExtra("PHONE", message1.getPhoneNumber());
         intent.putExtra("TEXT", message1.getMessageText());
         intent.putExtra("TYPE", message1.getMessageType());
+        intent.putExtra("TIME_STRING", message1.getTimeString());
 
         /**
          intent.putExtra("STATUS", message1.getMessageStatus());
          intent.putExtra("IMAGE", message1.getImageUri());
          intent.putExtra("INSTA_USERNAME", message1.getInstaUsername());
          intent.putExtra("TIME_INTERVAL", message1.getTimeInterval());
-         intent.putExtra("TIME_STRING", message1.getTimeString());
          */
 
         String currentString = message1.getPhoneNumber() + message1.getMessageText() + message1.getTimeString();
@@ -244,7 +244,7 @@ public class WhatsappScheduleFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        messageViewModel= new ViewModelProvider(getActivity()).get(MessageViewModel.class);
+        messageViewModel = new ViewModelProvider(getActivity()).get(MessageViewModel.class);
         messageViewModel.getAllMessages().observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
             @Override
             public void onChanged(List<Message> messages) {

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.telephony.SmsManager;
 import android.widget.Toast;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -19,7 +20,7 @@ import java.net.URLEncoder;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
 
-    int iconId = -1;
+    private int iconId = -1;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -30,12 +31,12 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         String messageText = intent.getStringExtra("TEXT");
         int messageType = intent.getIntExtra("TYPE", -1);
 
-        if(messageType == 1) {
+        if (messageType == 1) {
             sendSMS(phoneNumber, messageText);
             iconId = R.drawable.ic_sms;
-        }
-        else if(messageType == 2) {
-            SendWA(context);
+        } else if (messageType == 2) {
+            String timeString = intent.getStringExtra("TIME_STRING");
+            SendWA(context, phoneNumber, messageText, timeString);
             iconId = R.drawable.ic_whatsapp;
         }
 
@@ -52,31 +53,32 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         notificationManagerCompat.notify(id, notificationBuilder.build());
 
     }
-    private void SendMail(Context context,Intent intent1)
-    {
+
+    private void SendMail(Context context, Intent intent1) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setData(Uri.parse("mailto:feedback@gmail.com"));
-        intent.putExtra(Intent.EXTRA_TEXT,"message");
-        intent.putExtra(Intent.EXTRA_SUBJECT,"subject");
+        intent.putExtra(Intent.EXTRA_TEXT, "message");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "subject");
         // startActivity with intent with chooser
         // as Email client using createChooser function
         context.startActivity(intent);
     }
 
-    private void SendIG(Context context)
-    {
-        Intent instaintent = context.getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.instagram.android");
-        instaintent.setComponent(new ComponentName( "com.instagram.android", "com.instagram.android.activity.UrlHandlerActivity"));
-        instaintent.setData( Uri.parse( "https://www.instagram.com/_u/arka_pal_99") );
+    private void SendIG(Context context) {
+        Intent instaintent = context.getApplicationContext().getPackageManager()
+                .getLaunchIntentForPackage("com.instagram.android");
+        instaintent.setComponent(new ComponentName("com.instagram.android", "com.instagram.android.activity.UrlHandlerActivity"));
+        instaintent.setData(Uri.parse("https://www.instagram.com/_u/arka_pal_99"));
         instaintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(instaintent);
     }
-    private void SendWA(Context context)
-    {
+
+    private void SendWA(Context context, String phoneNumber, String messageText, String timeString) {
         Intent whatsappIntent = new Intent(context, WhatsappForegroundService.class);
-        whatsappIntent.putExtra("PHONE NUMBER", "917045360949");
-        whatsappIntent.putExtra("MESSAGE", "Hello, Neha! Are you okay?");
+        whatsappIntent.putExtra("PHONE", phoneNumber);
+        whatsappIntent.putExtra("TEXT", messageText);
+        whatsappIntent.putExtra("TIME_STRING", timeString);
         ContextCompat.startForegroundService(context, whatsappIntent);
 
         /*
@@ -96,8 +98,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         */
     }
 
-    private void sendSMS(String phoneNumber, String messageText)
-    {
+    private void sendSMS(String phoneNumber, String messageText) {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNumber, null, messageText,
                 null, null);
@@ -105,7 +106,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     private void createNotificationChannel(Context context) {
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "SmsNotificationChannel";
             String description = "Notification Channel for SMS";
             int importance = NotificationManager.IMPORTANCE_HIGH;
