@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -38,6 +39,11 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             String timeString = intent.getStringExtra("TIME_STRING");
             SendWA(context, phoneNumber, messageText, timeString);
             iconId = R.drawable.ic_whatsapp;
+        } else if (messageType == 3) {
+            String timeString = intent.getStringExtra("TIME_STRING");
+            String subject = intent.getStringExtra("SUBJECT");
+            sendEmail(context, phoneNumber, subject, messageText, timeString);
+            iconId = R.drawable.ic_email;
         }
 
         createNotificationChannel(context);
@@ -54,15 +60,25 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void SendMail(Context context, Intent intent1) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setData(Uri.parse("mailto:feedback@gmail.com"));
-        intent.putExtra(Intent.EXTRA_TEXT, "message");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "subject");
-        // startActivity with intent with chooser
-        // as Email client using createChooser function
-        context.startActivity(intent);
+    private void sendEmail(Context context, String emailId, String subject,
+                           String emailBody, String timeString) {
+
+        Intent emailIntent = new Intent(context, WhatsappForegroundService.class);
+        emailIntent.putExtra("TYPE", 3);
+        emailIntent.putExtra("PHONE", emailId);
+        emailIntent.putExtra("TEXT", emailBody);
+        emailIntent.putExtra("TIME_STRING", timeString);
+        emailIntent.putExtra("SUBJECT", subject);
+        ContextCompat.startForegroundService(context, emailIntent);
+
+        /**
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setData(Uri.parse("mailto:" + emailId));
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.getApplicationContext().startActivity(Intent.createChooser(intent,"Choose email app: " ));
+         */
     }
 
     private void SendIG(Context context) {
@@ -76,6 +92,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     private void SendWA(Context context, String phoneNumber, String messageText, String timeString) {
         Intent whatsappIntent = new Intent(context, WhatsappForegroundService.class);
+        whatsappIntent.putExtra("TYPE", 2);
         whatsappIntent.putExtra("PHONE", phoneNumber);
         whatsappIntent.putExtra("TEXT", messageText);
         whatsappIntent.putExtra("TIME_STRING", timeString);
