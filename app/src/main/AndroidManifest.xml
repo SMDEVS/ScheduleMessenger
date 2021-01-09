@@ -52,6 +52,7 @@
         <service android:name=".WhatsappForegroundService"
             android:stopWithTask="false"/>
 
+
     </application>
 
 </manifest>
