@@ -16,6 +16,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -60,8 +62,30 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void sendEmail(Context context, String emailId, String subject,
+    private void sendEmail(final Context context, String emailId, String subject,
                            String emailBody, String timeString) {
+
+        Toast.makeText(context, "HELLO from Broadcast", Toast.LENGTH_SHORT).show();
+
+
+        /**
+
+         Intent intent = new Intent(Intent.ACTION_SEND);
+         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailId});
+         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+         intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+         intent.setType("message/rfc822");
+         Intent chooserIntent = Intent.createChooser(intent, "Choose app for email: ");
+         chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+         if (intent.resolveActivity(context.getPackageManager()) != null) {
+         context.getApplicationContext().startActivity(chooserIntent);
+         try {
+         Thread.sleep(5000);
+         } catch (InterruptedException e) {
+         e.printStackTrace();
+         }
+         }
+         */
 
         Intent emailIntent = new Intent(context, WhatsappForegroundService.class);
         emailIntent.putExtra("TYPE", 3);
@@ -71,14 +95,6 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         emailIntent.putExtra("SUBJECT", subject);
         ContextCompat.startForegroundService(context, emailIntent);
 
-        /**
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setData(Uri.parse("mailto:" + emailId));
-                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                intent.putExtra(Intent.EXTRA_TEXT, emailBody);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.getApplicationContext().startActivity(Intent.createChooser(intent,"Choose email app: " ));
-         */
     }
 
     private void SendIG(Context context) {
@@ -91,6 +107,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void SendWA(Context context, String phoneNumber, String messageText, String timeString) {
+
         Intent whatsappIntent = new Intent(context, WhatsappForegroundService.class);
         whatsappIntent.putExtra("TYPE", 2);
         whatsappIntent.putExtra("PHONE", phoneNumber);
@@ -98,21 +115,6 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         whatsappIntent.putExtra("TIME_STRING", timeString);
         ContextCompat.startForegroundService(context, whatsappIntent);
 
-        /*
-        try {
-            String url ="https://api.whatsapp.com/send?phone=911111111111&text=" + URLEncoder.encode("message", "UTF-8");
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setPackage("com.whatsapp");
-            intent.setData(Uri.parse(url));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if(intent.resolveActivity(context.getPackageManager())!=null){
-                context.startActivity(intent);
-                Thread.sleep(5000);
-            }
-        } catch (UnsupportedEncodingException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     private void sendSMS(String phoneNumber, String messageText) {

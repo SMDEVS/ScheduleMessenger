@@ -18,6 +18,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
+import com.example.schedulemessenger.View.MainActivity;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -67,18 +70,30 @@ public class WhatsappForegroundService extends Service {
                     Thread.sleep(5000);
                 }
             } else if (type == 3) {
-                Log.e("WhatsappForeground", "In the correct block");
-                String subject = whatsappServiceIntent.getStringExtra("SUBJECT");
 
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setData(Uri.parse("mailto:" + phoneNumber));
-                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                intent.putExtra(Intent.EXTRA_TEXT, messageText);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (intent.resolveActivity(this.getPackageManager()) != null) {
-                    this.startActivity(Intent.createChooser(intent, "Choose email app: "));
-                    Thread.sleep(5000);
-                }
+                Toast.makeText(this, "In the correct email block!", Toast.LENGTH_SHORT).show();
+                String subject = whatsappServiceIntent.getStringExtra("SUBJECT");
+                BackgroundMail.newBuilder(getApplication())
+                        .withUsername("your_email_id@gmail.com") // Hard code your gmail id here
+                        .withPassword("your_password") // Hard code the password for above gmail id here
+                        .withSenderName("Your Name") // Hard code your name here 
+                        .withMailTo(phoneNumber)
+                        .withType(BackgroundMail.TYPE_PLAIN)
+                        .withSubject(subject)
+                        .withBody(messageText)
+                        .withOnSuccessCallback(new BackgroundMail.OnSendingCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(getApplicationContext(), "SUCCESS!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFail(Exception e) {
+                                Toast.makeText(getApplicationContext(), "FAIL", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .send();
+
             }
 
         } catch (UnsupportedEncodingException | InterruptedException e) {
@@ -87,6 +102,7 @@ public class WhatsappForegroundService extends Service {
             Log.e("ERROR", e.getMessage());
         }
 
+        Toast.makeText(this, "About to stop the service now", Toast.LENGTH_SHORT).show();
         stopSelf();
 
         String currentString = phoneNumber + messageText + timeString;

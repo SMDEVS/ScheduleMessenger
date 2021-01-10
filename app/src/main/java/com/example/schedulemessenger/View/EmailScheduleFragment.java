@@ -12,10 +12,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Environment;
 import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -26,10 +28,12 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.example.schedulemessenger.Model.Message;
 import com.example.schedulemessenger.MyBroadcastReceiver;
 import com.example.schedulemessenger.R;
 import com.example.schedulemessenger.ViewModel.MessageViewModel;
+import com.example.schedulemessenger.WhatsappForegroundService;
 import com.example.schedulemessenger.databinding.FragmentEmailScheduleBinding;
 import com.example.schedulemessenger.databinding.FragmentWhatsappScheduleBinding;
 
@@ -123,13 +127,14 @@ public class EmailScheduleFragment extends Fragment {
     }
 
     private void scheduleEmailJobService() {
-        Intent intent = new Intent(getActivity(), MyBroadcastReceiver.class);
-        intent.putExtra("ID", message1.getMessageId());
-        intent.putExtra("PHONE", message1.getPhoneNumber());
-        intent.putExtra("TEXT", message1.getMessageText());
-        intent.putExtra("TYPE", message1.getMessageType());
-        intent.putExtra("TIME_STRING", message1.getTimeString());
-        intent.putExtra("SUBJECT", message1.getInstaUsername());
+
+         Intent intent = new Intent(getActivity(), MyBroadcastReceiver.class);
+         intent.putExtra("ID", message1.getMessageId());
+         intent.putExtra("PHONE", message1.getPhoneNumber());
+         intent.putExtra("TEXT", message1.getMessageText());
+         intent.putExtra("TYPE", message1.getMessageType());
+         intent.putExtra("TIME_STRING", message1.getTimeString());
+         intent.putExtra("SUBJECT", message1.getInstaUsername());
 
         /**
          intent.putExtra("STATUS", message1.getMessageStatus());
@@ -138,11 +143,11 @@ public class EmailScheduleFragment extends Fragment {
          intent.putExtra("TIME_INTERVAL", message1.getTimeInterval());
          */
 
-        String currentString = message1.getPhoneNumber() + message1.getMessageText() + message1.getTimeString();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), currentString.hashCode(),
-                intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, finalSendingTime, pendingIntent);
+         String currentString = message1.getPhoneNumber() + message1.getMessageText() + message1.getTimeString();
+         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), currentString.hashCode(),
+         intent, 0);
+         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, finalSendingTime, pendingIntent);
 
     }
 
