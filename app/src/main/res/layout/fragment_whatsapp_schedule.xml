@@ -118,3 +118,4 @@
         android:text="Schedule"
         android:textColor="@color/colorPrimaryDark" />
 </LinearLayout>
+
