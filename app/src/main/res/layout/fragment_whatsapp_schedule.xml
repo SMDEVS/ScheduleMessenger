@@ -31,22 +31,22 @@
 
             <EditText
                 android:id="@+id/phoneNumberEditText"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Enter phone number "
                 android:inputType="phone" />
 
             <ImageButton
                 android:id="@+id/contacts"
+                style="@style/Widget.AppCompat.Button.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
                 android:layout_weight="0"
-                style="@style/Widget.AppCompat.Button.Small"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_baseline_account_box_24"
                 android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:backgroundTint="@color/WAIcon"
+                android:src="@drawable/ic_baseline_account_box_24"
                 android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
 
@@ -60,6 +60,7 @@
 
         <Button
             android:id="@+id/dateButton"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -67,12 +68,14 @@
             android:background="@drawable/button_background"
             android:drawableEnd="@drawable/ic_calender"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/WAIcon"
             android:padding="8dp"
             android:text="SET DATE"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/timeButton"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -80,20 +83,23 @@
             android:background="@drawable/button_background"
             android:drawableEnd="@drawable/ic_baseline_access_time_24"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/WAIcon"
             android:padding="8dp"
             android:text="SET TIME"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="25dp"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Message: "
             android:layout_marginBottom="7dp"
+            android:text="Message: "
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textColor="@color/colorPrimary" />
 
@@ -106,16 +112,20 @@
             android:inputType="text"
             android:maxLines="10" />
     </LinearLayout>
+
     <Button
         android:id="@+id/sendButton"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
         android:layout_gravity="bottom"
+        android:layout_margin="30dp"
         android:background="@drawable/button_background"
         android:drawableEnd="@android:drawable/ic_menu_send"
+        android:drawableTint="@color/WAIcon"
         android:padding="5dp"
         android:text="Schedule"
-        android:textColor="@color/colorPrimaryDark" />
+        android:drawableTintMode="src_atop"
+        android:textColor="@android:color/white" />
 </LinearLayout>
 

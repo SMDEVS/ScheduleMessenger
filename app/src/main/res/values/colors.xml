@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#365FE1</color>
-    <color name="colorPrimaryDark">#274FE8</color>
-    <color name="colorAccent">#5D77CC</color>
+    <color name="colorPrimary">#263238</color>
+    <color name="colorPrimaryDark">#000a12</color>
+    <color name="colorAccent">#ffa82d</color>
     <color name="SMSIcon">#1BA6DA</color>
-    <color name="SMSText">#0499CA</color>
+    <color name="SMSText">#1BA6DA</color>
     <color name="EmailIcon">#F44C4C</color>
-    <color name="EmailText">#EF3737</color>
+    <color name="EmailText">#F44C4C</color>
     <color name="WAIcon">#A6DA06</color>
-    <color name="WAText">#90CF11</color>
+    <color name="WAText">#A6DA06</color>
     <color name="IGIcon">#BD88DA</color>
-    <color name="IGText">#AA86BF</color>
+    <color name="IGText">#BD88DA</color>
 </resources>
