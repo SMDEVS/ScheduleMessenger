@@ -15,44 +15,47 @@
             android:id="@+id/image_view"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_sms"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_sms" />
 
         <TextView
             android:id="@+id/phone_number_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/image_view"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@id/message_status_text_view"
-            android:ellipsize="end"
-            android:textColor="@android:color/black"
             android:layout_marginLeft="8dp"
+            android:layout_toStartOf="@id/message_status_text_view"
+            android:layout_toEndOf="@id/image_view"
+            android:ellipsize="end"
             android:maxLines="1"
             android:text="Finish IT by Stephen King"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/message_status_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="@id/message_content_text_view"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
             android:paddingLeft="8dp"
             android:text="1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             android:textColor="@color/colorPrimary"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/message_content_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/phone_number_text_view"
             android:layout_alignParentStart="true"
             android:ellipsize="end"
-            android:maxLines="3"
-            android:textColor="@android:color/black"
+            android:maxLines="2"
             android:text="Today, I must finish the last 20 pages of one of my favourite novels."
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="@android:color/black" />
 
     </RelativeLayout>
 

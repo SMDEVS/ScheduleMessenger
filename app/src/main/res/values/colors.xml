@@ -11,4 +11,6 @@
     <color name="WAText">#A6DA06</color>
     <color name="IGIcon">#BD88DA</color>
     <color name="IGText">#BD88DA</color>
+    <color name="deleteNoteColor">#4527a0</color>
+    <color name="cancelMessageColor">#a30000</color>
 </resources>
