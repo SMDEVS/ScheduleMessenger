@@ -1,24 +1,20 @@
 package com.example.schedulemessenger.View;
 
-import android.Manifest;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.provider.Settings;
 import android.text.format.DateFormat;
@@ -33,7 +29,6 @@ import android.widget.Toast;
 import com.example.schedulemessenger.Model.Message;
 import com.example.schedulemessenger.MyBroadcastReceiver;
 import com.example.schedulemessenger.ViewModel.MessageViewModel;
-import com.example.schedulemessenger.databinding.FragmentSmsScheduleBinding;
 import com.example.schedulemessenger.databinding.FragmentWhatsappScheduleBinding;
 
 import java.text.ParseException;

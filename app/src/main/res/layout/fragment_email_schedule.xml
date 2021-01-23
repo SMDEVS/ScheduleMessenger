@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical"
-
     tools:context=".View.SmsScheduleFragment">
 
 
@@ -33,12 +32,12 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/phoneNumberEditText"
+                android:id="@+id/emailIdEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Enter Mail ID "
-                android:inputType="phone" />
+                android:inputType="text" />
 
             <ImageButton
                 android:id="@+id/contacts"
@@ -51,6 +50,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_email"
                 android:textColor="@color/colorPrimaryDark" />
+
         </LinearLayout>
 
     </LinearLayout>
@@ -148,4 +148,5 @@
         android:padding="5dp"
         android:text="Schedule"
         android:textColor="@android:color/white" />
+
 </LinearLayout>

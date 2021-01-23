@@ -9,11 +9,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -38,6 +41,11 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             String timeString = intent.getStringExtra("TIME_STRING");
             SendWA(context, phoneNumber, messageText, timeString);
             iconId = R.drawable.ic_whatsapp;
+        } else if (messageType == 3) {
+            String timeString = intent.getStringExtra("TIME_STRING");
+            String subject = intent.getStringExtra("SUBJECT");
+            sendEmail(context, phoneNumber, subject, messageText, timeString);
+            iconId = R.drawable.ic_email;
         }
 
         createNotificationChannel(context);
@@ -54,15 +62,39 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void SendMail(Context context, Intent intent1) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setData(Uri.parse("mailto:feedback@gmail.com"));
-        intent.putExtra(Intent.EXTRA_TEXT, "message");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "subject");
-        // startActivity with intent with chooser
-        // as Email client using createChooser function
-        context.startActivity(intent);
+    private void sendEmail(final Context context, String emailId, String subject,
+                           String emailBody, String timeString) {
+
+        Toast.makeText(context, "HELLO from Broadcast", Toast.LENGTH_SHORT).show();
+
+
+        /**
+
+         Intent intent = new Intent(Intent.ACTION_SEND);
+         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailId});
+         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+         intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+         intent.setType("message/rfc822");
+         Intent chooserIntent = Intent.createChooser(intent, "Choose app for email: ");
+         chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+         if (intent.resolveActivity(context.getPackageManager()) != null) {
+         context.getApplicationContext().startActivity(chooserIntent);
+         try {
+         Thread.sleep(5000);
+         } catch (InterruptedException e) {
+         e.printStackTrace();
+         }
+         }
+         */
+
+        Intent emailIntent = new Intent(context, WhatsappForegroundService.class);
+        emailIntent.putExtra("TYPE", 3);
+        emailIntent.putExtra("PHONE", emailId);
+        emailIntent.putExtra("TEXT", emailBody);
+        emailIntent.putExtra("TIME_STRING", timeString);
+        emailIntent.putExtra("SUBJECT", subject);
+        ContextCompat.startForegroundService(context, emailIntent);
+
     }
 
     private void SendIG(Context context) {
@@ -75,27 +107,14 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void SendWA(Context context, String phoneNumber, String messageText, String timeString) {
+
         Intent whatsappIntent = new Intent(context, WhatsappForegroundService.class);
+        whatsappIntent.putExtra("TYPE", 2);
         whatsappIntent.putExtra("PHONE", phoneNumber);
         whatsappIntent.putExtra("TEXT", messageText);
         whatsappIntent.putExtra("TIME_STRING", timeString);
         ContextCompat.startForegroundService(context, whatsappIntent);
 
-        /*
-        try {
-            String url ="https://api.whatsapp.com/send?phone=911111111111&text=" + URLEncoder.encode("message", "UTF-8");
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setPackage("com.whatsapp");
-            intent.setData(Uri.parse(url));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if(intent.resolveActivity(context.getPackageManager())!=null){
-                context.startActivity(intent);
-                Thread.sleep(5000);
-            }
-        } catch (UnsupportedEncodingException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     private void sendSMS(String phoneNumber, String messageText) {
