@@ -136,6 +136,23 @@ public class HistoryFragment extends Fragment {
                         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                         alarmManager.cancel(pendingIntent);
 
+                    } else if (messageType == 4) {
+
+                        //To cancel a scheduled Instagram message
+                        Intent intent = new Intent(getActivity(), MyBroadcastReceiver.class);
+                        intent.putExtra("ID", message.getMessageId());
+                        intent.putExtra("PHONE", "");
+                        intent.putExtra("TEXT", message.getMessageText());
+                        intent.putExtra("TYPE", message.getMessageType());
+                        intent.putExtra("TIME_STRING", message.getTimeString());
+                        intent.putExtra("INSTA_USERNAME", message.getInstaUsername());
+
+                        String currentString = message.getPhoneNumber() + message.getMessageText() + message.getTimeString();
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), currentString.hashCode(),
+                                intent, 0);
+                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.cancel(pendingIntent);
+
                     }
 
                 }

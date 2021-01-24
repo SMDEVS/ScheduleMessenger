@@ -15,7 +15,8 @@ public class Message {
      *  2 - WhatsApp Message
      *  3 - Email
      *  4 - Instagram Message
-     *  5 - Instagram Story                                  */
+     *  5 - Instagram Story
+     */
     @ColumnInfo(name = "message_type")
     private int messageType;
 

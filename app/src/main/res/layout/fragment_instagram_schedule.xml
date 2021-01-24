@@ -30,12 +30,24 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/phoneNumberEditText"
+                android:id="@+id/instaUsernameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Enter InstagramID "
-                android:inputType="phone" />
+                android:inputType="text" />
+
+            <ImageButton
+                android:id="@+id/contacts"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:padding="5dp"
+                android:scaleType="centerInside"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:src="@drawable/ic_instagram"
+                android:textColor="@color/colorPrimaryDark" />
 
         </LinearLayout>
 
@@ -116,4 +128,5 @@
         android:padding="5dp"
         android:text="Schedule"
         android:textColor="@android:color/white" />
+
 </LinearLayout>
