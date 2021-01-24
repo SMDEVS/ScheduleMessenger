@@ -142,19 +142,13 @@ public class WhatsappScheduleFragment extends Fragment {
     }
 
     private void scheduleWhatsappJobService() {
+        
         Intent intent = new Intent(getActivity(), MyBroadcastReceiver.class);
         intent.putExtra("ID", message1.getMessageId());
         intent.putExtra("PHONE", message1.getPhoneNumber());
         intent.putExtra("TEXT", message1.getMessageText());
         intent.putExtra("TYPE", message1.getMessageType());
         intent.putExtra("TIME_STRING", message1.getTimeString());
-
-        /**
-         intent.putExtra("STATUS", message1.getMessageStatus());
-         intent.putExtra("IMAGE", message1.getImageUri());
-         intent.putExtra("INSTA_USERNAME", message1.getInstaUsername());
-         intent.putExtra("TIME_INTERVAL", message1.getTimeInterval());
-         */
 
         String currentString = message1.getPhoneNumber() + message1.getMessageText() + message1.getTimeString();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), currentString.hashCode(),

@@ -2,6 +2,7 @@ package com.example.schedulemessenger;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -46,6 +47,11 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             String subject = intent.getStringExtra("SUBJECT");
             sendEmail(context, phoneNumber, subject, messageText, timeString);
             iconId = R.drawable.ic_email;
+        } else if(messageType == 4) {
+            String instaUsername = intent.getStringExtra("INSTA_USERNAME");
+            String timeString = intent.getStringExtra("TIME_STRING");
+            sendInstaMessage(context, instaUsername, messageText, timeString);
+            iconId = R.drawable.ic_instagram;
         }
 
         createNotificationChannel(context);
@@ -65,28 +71,6 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     private void sendEmail(final Context context, String emailId, String subject,
                            String emailBody, String timeString) {
 
-        Toast.makeText(context, "HELLO from Broadcast", Toast.LENGTH_SHORT).show();
-
-
-        /**
-
-         Intent intent = new Intent(Intent.ACTION_SEND);
-         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailId});
-         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-         intent.putExtra(Intent.EXTRA_TEXT, emailBody);
-         intent.setType("message/rfc822");
-         Intent chooserIntent = Intent.createChooser(intent, "Choose app for email: ");
-         chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-         if (intent.resolveActivity(context.getPackageManager()) != null) {
-         context.getApplicationContext().startActivity(chooserIntent);
-         try {
-         Thread.sleep(5000);
-         } catch (InterruptedException e) {
-         e.printStackTrace();
-         }
-         }
-         */
-
         Intent emailIntent = new Intent(context, WhatsappForegroundService.class);
         emailIntent.putExtra("TYPE", 3);
         emailIntent.putExtra("PHONE", emailId);
@@ -97,13 +81,21 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void SendIG(Context context) {
-        Intent instaintent = context.getApplicationContext().getPackageManager()
-                .getLaunchIntentForPackage("com.instagram.android");
-        instaintent.setComponent(new ComponentName("com.instagram.android", "com.instagram.android.activity.UrlHandlerActivity"));
-        instaintent.setData(Uri.parse("https://www.instagram.com/_u/arka_pal_99"));
-        instaintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(instaintent);
+    private void sendInstaMessage(Context context, String username, String messageText, String timeString) {
+
+        Uri uri = Uri.parse("http://instagram.com/_u/" + username);
+        Intent instaIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+        instaIntent.setPackage("com.instagram.android");
+        instaIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        try {
+            context.startActivity(instaIntent);
+        } catch (ActivityNotFoundException e) {
+            context.startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://instagram.com/" + username)));
+        }
+
     }
 
     private void SendWA(Context context, String phoneNumber, String messageText, String timeString) {
