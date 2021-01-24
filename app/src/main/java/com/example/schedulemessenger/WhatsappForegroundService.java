@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
@@ -71,12 +72,16 @@ public class WhatsappForegroundService extends Service {
                 }
             } else if (type == 3) {
 
+                SharedPreferences sharedPref = getApplication().getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                String emailId = sharedPref.getString("EMAIL_ID", "");
+                String password = sharedPref.getString("PASSWORD", "");
+
                 Toast.makeText(this, "In the correct email block!", Toast.LENGTH_SHORT).show();
                 String subject = whatsappServiceIntent.getStringExtra("SUBJECT");
                 BackgroundMail.newBuilder(getApplication())
-                        .withUsername("your_email_id@gmail.com") // Hard code your gmail id here
-                        .withPassword("your_password") // Hard code the password for above gmail id here
-                        .withSenderName("Your Name") // Hard code your name here 
+                        .withUsername(emailId) // Hard code your gmail id here
+                        .withPassword(password) // Hard code the password for above gmail id here
                         .withMailTo(phoneNumber)
                         .withType(BackgroundMail.TYPE_PLAIN)
                         .withSubject(subject)
