@@ -67,6 +67,9 @@ public class SmsScheduleFragment extends Fragment {
     private long finalSendingTime;
     private Message message1;
 
+    private boolean isDateSet = false;
+    private boolean isTimeSet = false;
+
     private MessageViewModel messageViewModel;
 
     public SmsScheduleFragment() {
@@ -106,14 +109,32 @@ public class SmsScheduleFragment extends Fragment {
         smsScheduleBinding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Message set",
-                        Toast.LENGTH_SHORT).show();
-
                 ActivityCompat.requestPermissions(getActivity(), new String[]
                         {Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
 
-                String phoneNumber = smsScheduleBinding.phoneNumberEditText.getText().toString();
+                String phoneNumber = smsScheduleBinding.phoneNumberEditText.getText().toString().trim();
                 String messageText = smsScheduleBinding.messageEditText.getText().toString();
+
+                if(phoneNumber.isEmpty()) {
+                    Toast.makeText(getContext(), "Enter a valid phone number",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(!isDateSet){
+                    Toast.makeText(getContext(), "Date not set",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(!isTimeSet) {
+                    Toast.makeText(getContext(), "Time not set",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(messageText.isEmpty()) {
+                    Toast.makeText(getContext(), "Message text is empty",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Toast.makeText(getContext(), "Message set",
+                        Toast.LENGTH_SHORT).show();
 
                 scheduledTimeInterval = calculateTimeInterval();
                 finalSendingTime = scheduledTimeInterval + System.currentTimeMillis();
@@ -143,14 +164,6 @@ public class SmsScheduleFragment extends Fragment {
         intent.putExtra("PHONE", message1.getPhoneNumber());
         intent.putExtra("TEXT", message1.getMessageText());
         intent.putExtra("TYPE", message1.getMessageType());
-
-        /**
-        intent.putExtra("STATUS", message1.getMessageStatus());
-        intent.putExtra("IMAGE", message1.getImageUri());
-        intent.putExtra("INSTA_USERNAME", message1.getInstaUsername());
-        intent.putExtra("TIME_INTERVAL", message1.getTimeInterval());
-        intent.putExtra("TIME_STRING", message1.getTimeString());
-         */
 
         String currentString = message1.getPhoneNumber() + message1.getMessageText() + message1.getTimeString();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), currentString.hashCode(),
@@ -204,6 +217,7 @@ public class SmsScheduleFragment extends Fragment {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                isTimeSet = true;
                 Toast.makeText(getContext(), "Time set", Toast.LENGTH_LONG).show();
 
                 Calendar calendar1=Calendar.getInstance();
@@ -233,6 +247,7 @@ public class SmsScheduleFragment extends Fragment {
                 new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                isDateSet = true;
                 Toast.makeText(getContext(), "Date set", Toast.LENGTH_LONG).show();
 
                 Calendar calendar1=Calendar.getInstance();

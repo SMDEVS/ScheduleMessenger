@@ -55,6 +55,9 @@ public class WhatsappScheduleFragment extends Fragment {
 
     private MessageViewModel messageViewModel;
 
+    private boolean isDateSet = false;
+    private boolean isTimeSet = false;
+
     public WhatsappScheduleFragment() {
         // Required empty public constructor
     }
@@ -93,11 +96,29 @@ public class WhatsappScheduleFragment extends Fragment {
         whatsappScheduleBinding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Message set",
-                        Toast.LENGTH_SHORT).show();
 
-                String phoneNumber = whatsappScheduleBinding.phoneNumberEditText.getText().toString();
+                String phoneNumber = whatsappScheduleBinding.phoneNumberEditText.getText().toString().trim();
                 String messageText = whatsappScheduleBinding.messageEditText.getText().toString();
+
+                if(phoneNumber.isEmpty()) {
+                    Toast.makeText(getContext(), "Enter a valid phone number",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(!isDateSet){
+                    Toast.makeText(getContext(), "Date not set",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(!isTimeSet) {
+                    Toast.makeText(getContext(), "Time not set",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(messageText.isEmpty()) {
+                    Toast.makeText(getContext(), "Message text is empty",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Toast.makeText(getContext(), "WhatsApp message set", Toast.LENGTH_SHORT).show();
 
                 scheduledTimeInterval = calculateTimeInterval();
                 finalSendingTime = scheduledTimeInterval + System.currentTimeMillis();
@@ -187,6 +208,7 @@ public class WhatsappScheduleFragment extends Fragment {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                isTimeSet = true;
                 Toast.makeText(getContext(), "Time set", Toast.LENGTH_LONG).show();
 
                 Calendar calendar1 = Calendar.getInstance();
@@ -214,6 +236,7 @@ public class WhatsappScheduleFragment extends Fragment {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        isDateSet = true;
                         Toast.makeText(getContext(), "Date set", Toast.LENGTH_LONG).show();
 
                         Calendar calendar1 = Calendar.getInstance();

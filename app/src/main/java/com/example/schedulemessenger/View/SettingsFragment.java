@@ -32,12 +32,13 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment, using ViewBinding
         settingsBinding = FragmentSettingsBinding.inflate(inflater, container, false);
         return settingsBinding.getRoot();
+
     }
 
     @Override
@@ -48,8 +49,22 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String emailId = settingsBinding.emailIdEditText.getText().toString();
-                String password = settingsBinding.passwordEditText.getText().toString();
+                String emailId = settingsBinding.emailIdEditText.getText().toString().trim();
+                String password = settingsBinding.passwordEditText.getText().toString().trim();
+
+                if(emailId.isEmpty()) {
+                    Toast.makeText(getContext(), "Enter a valid Gmail id",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(!emailId.endsWith("gmail.com")) {
+                    Toast.makeText(getContext(), "Please enter only a Gmail id",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(password.isEmpty()) {
+                    Toast.makeText(getContext(), "Password is empty",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 Context context = getActivity();
                 SharedPreferences sharedPref = context.getSharedPreferences(
@@ -64,6 +79,5 @@ public class SettingsFragment extends Fragment {
         });
 
     }
-
 
 }
