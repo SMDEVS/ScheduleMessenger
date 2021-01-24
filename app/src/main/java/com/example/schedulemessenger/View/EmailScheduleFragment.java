@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -60,6 +61,9 @@ public class EmailScheduleFragment extends Fragment {
 
     private MessageViewModel messageViewModel;
 
+    private boolean isDateSet = false;
+    private boolean isTimeSet = false;
+
     public EmailScheduleFragment() {
         // Required empty public constructor
     }
@@ -98,12 +102,45 @@ public class EmailScheduleFragment extends Fragment {
         emailScheduleBinding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Message set",
-                        Toast.LENGTH_SHORT).show();
 
-                String phoneNumber = emailScheduleBinding.emailIdEditText.getText().toString();
-                String subject = emailScheduleBinding.subjectEditText.getText().toString();
+                String phoneNumber = emailScheduleBinding.emailIdEditText.getText().toString().trim();
+                String subject = emailScheduleBinding.subjectEditText.getText().toString().trim();
                 String messageText = emailScheduleBinding.messageEditText.getText().toString();
+
+                if(phoneNumber.isEmpty()) {
+                    Toast.makeText(getContext(), "Enter a valid email id",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(!isDateSet){
+                    Toast.makeText(getContext(), "Date not set",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(!isTimeSet) {
+                    Toast.makeText(getContext(), "Time not set",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(subject.isEmpty()) {
+                    Toast.makeText(getContext(), "Email subject is empty",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(messageText.isEmpty()) {
+                    Toast.makeText(getContext(), "Email body is empty",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                String emailId = sharedPref.getString("EMAIL_ID", "");
+                String password = sharedPref.getString("PASSWORD", "");
+
+                if(emailId.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getContext(), "Please set valid gmail id and " +
+                            "password in Settings", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Toast.makeText(getContext(), "Email set", Toast.LENGTH_SHORT).show();
 
                 scheduledTimeInterval = calculateTimeInterval();
                 finalSendingTime = scheduledTimeInterval + System.currentTimeMillis();
@@ -135,13 +172,6 @@ public class EmailScheduleFragment extends Fragment {
          intent.putExtra("TYPE", message1.getMessageType());
          intent.putExtra("TIME_STRING", message1.getTimeString());
          intent.putExtra("SUBJECT", message1.getInstaUsername());
-
-        /**
-         intent.putExtra("STATUS", message1.getMessageStatus());
-         intent.putExtra("IMAGE", message1.getImageUri());
-         intent.putExtra("INSTA_USERNAME", message1.getInstaUsername());
-         intent.putExtra("TIME_INTERVAL", message1.getTimeInterval());
-         */
 
          String currentString = message1.getPhoneNumber() + message1.getMessageText() + message1.getTimeString();
          PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), currentString.hashCode(),
@@ -195,6 +225,7 @@ public class EmailScheduleFragment extends Fragment {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                isTimeSet = true;
                 Toast.makeText(getContext(), "Time set", Toast.LENGTH_LONG).show();
 
                 Calendar calendar1 = Calendar.getInstance();
@@ -222,6 +253,7 @@ public class EmailScheduleFragment extends Fragment {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        isDateSet = true;
                         Toast.makeText(getContext(), "Date set", Toast.LENGTH_LONG).show();
 
                         Calendar calendar1 = Calendar.getInstance();

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,8 +58,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
         String day = timeString.substring(indexOfSlash + 1, indexOfSlash + 3);
         String year = timeString.substring(indexOfSlash + 4, indexOfSpace);
         String time = timeString.substring(indexOfSpace + 1, indexOfColon + 3);
-        if(timeString.endsWith("pm")) {
+
+        if(timeString.endsWith("pm") && !time.startsWith("12")) {
             time = (Integer.parseInt(time.substring(0, 2)) + 12) + "" + time.substring(2);
+        } else if(timeString.endsWith("am") && time.startsWith("12")) {
+            time = "00" + "" + time.substring(2);
         }
         timeString = day + '/' + month + "/" + year + " " + time;
 
